@@ -1,0 +1,109 @@
+- document:
+  - text: Don’t miss what’s happening People on X are the first to know.
+  - link "Log in" [ref=e1]:
+    - /url: /login
+  - link "Sign up" [ref=e2]:
+    - /url: /i/flow/signup
+  - button "Skip to home timeline" [ref=e3]
+  - button "Skip to trending" [ref=e4]
+  - banner:
+    - heading "X" [ref=e5] [level=1]:
+      - link "X" [ref=e6]:
+        - /url: /
+    - navigation "Primary" [ref=e7]
+  - main:
+    - button "Back" [ref=e8]
+    - heading "Article" [ref=e9] [level=2]
+    - link "Focus mode" [ref=e10]:
+      - /url: /mernit/article/2021324284875153544
+    - status
+    - region "Conversation" [ref=e11]:
+      - heading "Conversation" [ref=e12] [level=1]
+      - article "Eli Mernit Verified account @mernit 30 replies, 107 reposts, 996 likes, 1841 bookmarks, 189630 views" [ref=e13]:
+        - link "Eli Mernit Verified account" [ref=e14]:
+          - /url: /mernit
+          - text: Eli Mernit
+          - img "Verified account"
+        - link "@mernit" [ref=e15]:
+          - /url: /mernit
+        - button "More" [ref=e16]
+        - link "Image" [ref=e17]:
+          - /url: /mernit/article/2021324284875153544/media/2021309989365907457
+          - img "Image"
+        - text: Your Company is a Filesystem
+        - group "30 replies, 107 reposts, 996 likes, 1841 bookmarks, 189630 views":
+          - button "30 Replies. Reply" [ref=e18]: "30"
+          - button "107 reposts. Repost" [ref=e19]: "107"
+          - button "996 Likes. Like" [ref=e20]: "996"
+          - link "189630 views. View post analytics" [ref=e21]:
+            - /url: /mernit/status/2021324284875153544/analytics
+            - text: 189K
+          - button "Bookmark" [ref=e22]
+          - button "Share post" [ref=e23]
+        - text: One of the reasons Openclaw is so good is because its entire context is a filesystem on your computer. Openclaw runs on a computer and lets you talk to it via a chat app like Telegram or iMessage. When you ask it to run a task, it calls the Claude API and uses context from files on your machine. Your conversation with Openclaw is represented as a file on the computer. When you run a task, Openclaw writes to that file. The filesystem is the state. As you add more data to those files, Openclaw becomes more powerful and useful. When you connect your Gmail, Openclaw has emails as files on your computer. When you connect your Eight Sleep bed, Openclaw adds your sleep data to a file on the computer. Openclaw wants to take over your world, but it can only do that if your data is in the filesystem. But if Openclaw is useful for our personal lives, how powerful would Openclaw (or other AI agents) actually be if an entire company was represented as a filesystem it could work in? Let's take a law firm, as an example.
+        - link "Image" [ref=e24] [nth=1]:
+          - /url: /mernit/article/2021324284875153544/media/2021310258178564096
+          - img "Image"
+        - text: "Law firm as filesystem In this world, the law firm is reduced to a set of folders on a computer. When a new case comes in, we write to /cases. When the case is assigned to a lawyer, we add the case to their /cases folder. When they log time, we add the entry to /billing/time-sheet. The entire back office operation is just a state machine. Another interesting aspect of the filesystem is that permissions naturally map to seniority in the org chart. For example, a first-year associate gets read/write access on their cases, whereas partners can access everyone's cases. The governance structure is just unix file permissions. One reason that rolling out agents at enterprises is complicated is because data is siloed across many different systems. Invoices are in Quickbooks, emails are in Outlook, proposals live in Sharepoint, contracts live in Netsuite, and so on. There is no shared namespace to access all this data across the business. By modeling a company like a filesystem, agents can access nearly all the data they need to get the right context and make decisions. There's obviously nuance to all businesses, and many work streams are codified in people's heads - not in JSON files. But the power of Openclaw and the underlying architecture points to a future where the filesystem becomes the source of truth for the agents that are the most useful. The past year has been explosive for AI agents. But when you tear away the noise, the architecture of an AI agent can be reduced to two components: the filesystem as state, and Claude as the orchestrator. By modeling the company as a filesystem, an agent is able to solve business problems by simply reading and writing files."
+        - status:
+          - text: Want to publish your own Article?
+          - link "Upgrade to Premium" [ref=e25]:
+            - /url: /i/premium_sign_up
+        - link "12:43 PM · Feb 10, 2026" [ref=e26]:
+          - /url: /mernit/status/2021324284875153544
+          - time: 12:43 PM · Feb 10, 2026
+        - link "189.6K Views" [ref=e27]:
+          - /url: /mernit/status/2021324284875153544/analytics
+        - group "30 replies, 107 reposts, 996 likes, 1841 bookmarks, 189630 views":
+          - button "30 Replies. Reply" [ref=e28] [nth=1]: "30"
+          - button "107 reposts. Repost" [ref=e29] [nth=1]: "107"
+          - button "996 Likes. Like" [ref=e30] [nth=1]: "996"
+          - button "1841 Bookmarks. Bookmark" [ref=e31]: 1.8K
+          - button "Share post" [ref=e32] [nth=1]
+        - button "Read 30 replies" [ref=e33]
+    - region "Sign up" [ref=e34]:
+      - heading "New to X?" [ref=e35] [level=2]
+      - text: Sign up now to get your own personalized timeline!
+      - iframe
+      - button "Sign up with Apple" [ref=e36]
+      - link "Create account" [ref=e37]:
+        - /url: /i/flow/signup
+      - text: By signing up, you agree to the
+      - link "Terms of Service" [ref=e38]:
+        - /url: https://x.com/tos
+      - text: and
+      - link "Privacy Policy" [ref=e39]:
+        - /url: https://x.com/privacy
+      - text: ", including"
+      - link "Cookie Use." [ref=e40]:
+        - /url: https://help.x.com/rules-and-policies/twitter-cookies
+    - region "Trending now" [ref=e41]:
+      - heading "Trending now" [ref=e42] [level=1]
+      - heading "What’s happening" [ref=e43] [level=2]
+      - link "Trending in Singapore Kihyun" [ref=e44]
+      - 'link "Trending in Singapore namtanfilm x eucerin dermopure Trending with #EucerinXNamtanFilm"':
+        - text: Trending in Singapore namtanfilm x eucerin dermopure Trending with
+        - link "#EucerinXNamtanFilm" [ref=e45]:
+          - /url: /search?q=%23EucerinXNamtanFilm&src=trend_click&vertical=trends
+      - link "Monsta X · Trending Hyungwon" [ref=e46]
+      - link "Trending in Singapore Sylus" [ref=e47]
+      - link "Show more" [ref=e48]:
+        - /url: /explore/tabs/for-you
+    - navigation "Footer" [ref=e49]:
+      - link "Terms of Service" [ref=e50] [nth=1]:
+        - /url: https://x.com/tos
+      - text: "|"
+      - link "Privacy Policy" [ref=e51] [nth=1]:
+        - /url: https://x.com/privacy
+      - text: "|"
+      - link "Cookie Policy" [ref=e52]:
+        - /url: https://support.x.com/articles/20170514
+      - text: "|"
+      - link "Accessibility" [ref=e53]:
+        - /url: https://help.x.com/resources/accessibility
+      - text: "|"
+      - link "Ads info" [ref=e54]:
+        - /url: https://business.x.com/en/help/troubleshooting/how-twitter-ads-work.html?ref=web-twc-ao-gbl-adsinfo&utm_source=twc&utm_medium=web&utm_campaign=ao&utm_content=adsinfo
+      - text: "|"
+      - button "More" [ref=e55] [nth=1]
+      - text: © 2026 X Corp.
