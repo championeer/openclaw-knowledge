@@ -28,14 +28,14 @@ assemble_md() {
   local out="$dir/article.md"
 
   python3 - <<'PY'
-import json, os
-from datetime import datetime
+import json, os, re
+from datetime import datetime, UTC
 
-dir = os.environ['DIR']
-url = os.environ.get('URL','')
-meta_path = os.path.join(dir, '.meta.json')
-snap_path = os.path.join(dir, '.snapshot.txt')
-images_path = os.path.join(dir, '.images.json')
+DIR = os.environ['DIR']
+URL = os.environ.get('URL','')
+meta_path = os.path.join(DIR, '.meta.json')
+snap_path = os.path.join(DIR, '.snapshot.txt')
+images_path = os.path.join(DIR, '.images.json')
 
 meta = {}
 if os.path.exists(meta_path):
@@ -46,55 +46,116 @@ if os.path.exists(meta_path):
 
 author_name = meta.get('author_name','unknown')
 author_url = meta.get('author_url','')
-title = meta.get('title') or meta.get('provider_name') or 'X Post'
 
-imgs = []
-if os.path.exists(images_path):
+def load_images(p):
+  if not os.path.exists(p):
+    return []
   try:
-    imgs = json.load(open(images_path,'r',encoding='utf-8'))
-    # x-post-archiver may write a JSON-encoded string that itself contains JSON
-    if isinstance(imgs, str):
-      imgs = json.loads(imgs)
+    v = json.load(open(p,'r',encoding='utf-8'))
+    if isinstance(v, str):
+      v = json.loads(v)
+    return v if isinstance(v, list) else []
   except Exception:
-    imgs = []
+    return []
+
+imgs = load_images(images_path)
 
 snapshot = ''
 if os.path.exists(snap_path):
-  snapshot = open(snap_path,'r',encoding='utf-8',errors='replace').read().strip()
+  snapshot = open(snap_path,'r',encoding='utf-8',errors='replace').read().splitlines()
 
-lines = []
-lines.append(f"# {title}")
-lines.append("")
-lines.append(f"> **Author**: {author_name}" + (f" ([link]({author_url}))" if author_url else ""))
-if url:
-  lines.append(f"> **Original**: [{url}]({url})")
-lines.append(f"> **Archived at**: {datetime.utcnow().isoformat(timespec='seconds')}Z")
-lines.append("")
-lines.append("---")
-lines.append("")
+# Heuristic: title = first short `- text:` line that isn't boilerplate.
+boiler = {
+  "Don’t miss what’s happening People on X are the first to know.",
+  "Don't miss what's happening People on X are the first to know.",
+}
 
-if imgs:
-  lines.append("## Media")
-  lines.append("")
-  for i, im in enumerate(imgs, start=1):
-    local = im.get('local')
-    alt = (im.get('alt') or '').strip() or f"image {i}"
-    if local:
-      lines.append(f"![{alt}](media/{local})")
-  lines.append("")
-  lines.append("---")
-  lines.append("")
+def guess_title(lines):
+  for ln in lines:
+    m = re.match(r"\s*-\s*text:\s*(.+)$", ln)
+    if not m:
+      continue
+    t = m.group(1).strip().strip('"')
+    if not t or t in boiler:
+      continue
+    # Skip giant paragraphs; title is usually short.
+    if len(t) > 140:
+      continue
+    # Prefer something title-cased / not UI labels.
+    if t.lower() in {"sign up", "log in", "new to x?", "trending now", "what’s happening", "what's happening"}:
+      continue
+    return t
+  return meta.get('title') or meta.get('provider_name') or 'X Post'
 
-lines.append("## Snapshot (raw)")
-lines.append("")
-lines.append("```text")
-lines.append(snapshot)
-lines.append("```")
-lines.append("")
+title = meta.get('title') or guess_title(snapshot)
 
-out_path = os.path.join(dir, 'article.md')
+# Extract article body from within the first `- article "..."` block.
+# We collect `- text:` entries and keep them as paragraphs.
+
+def extract_body(lines):
+  in_article = False
+  base_indent = None
+  out = []
+  for ln in lines:
+    if not in_article:
+      if re.search(r"-\s*article\s+\"", ln):
+        in_article = True
+        base_indent = len(ln) - len(ln.lstrip(' '))
+      continue
+
+    indent = len(ln) - len(ln.lstrip(' '))
+    if indent <= (base_indent or 0):
+      # article block ended
+      break
+
+    tm = re.match(r"\s*-\s*text:\s*(.+)$", ln)
+    if tm:
+      txt = tm.group(1).strip().strip('"')
+      if txt and txt not in boiler:
+        out.append(txt)
+  # De-dup consecutive duplicates
+  cleaned = []
+  for p in out:
+    if cleaned and cleaned[-1] == p:
+      continue
+    cleaned.append(p)
+  return cleaned
+
+paras = extract_body(snapshot)
+
+md = []
+md.append(f"# {title}")
+md.append("")
+md.append(f"> **Author**: {author_name}" + (f" ([@link]({author_url}))" if author_url else ""))
+if URL:
+  md.append(f"> **Original**: [{URL}]({URL})")
+md.append(f"> **Archived at**: {datetime.now(UTC).isoformat(timespec='seconds')}")
+md.append("")
+md.append("---")
+md.append("")
+
+# Always include screenshot if present
+if os.path.exists(os.path.join(DIR, 'media', 'full_page.png')):
+  md.append("![](media/full_page.png)")
+  md.append("")
+
+if paras:
+  md.append("## Content")
+  md.append("")
+  for p in paras:
+    md.append(p)
+    md.append("")
+else:
+  md.append("## Snapshot (raw)")
+  md.append("")
+  md.append("```text")
+  md.append("\n".join(snapshot).strip())
+  md.append("```")
+  md.append("")
+
+out_path = os.path.join(DIR, 'article.md')
 with open(out_path,'w',encoding='utf-8') as f:
-  f.write("\n".join(lines))
+  f.write("\n".join(md))
 print(out_path)
 PY
 }
@@ -103,8 +164,55 @@ case "$mode" in
   url)
     url="$1"; shift || true
     tweet_id=$(python3 -c "import re,sys; m=re.search(r'/status/(\d+)', sys.argv[1]); print(m.group(1) if m else 'unknown')" "$url")
-    out_dir="$OUT_BASE/$tweet_id"
-    bash "$DL_SH" download "$url" "$out_dir" "$@"
+    tmp_dir="$OUT_BASE/$tweet_id"
+    bash "$DL_SH" download "$url" "$tmp_dir" "$@"
+
+    # Rename directory to article title (slug) when possible.
+    new_name=$(python3 - <<'PY'
+import os,re,sys
+snap=os.path.join(sys.argv[1],'.snapshot.txt')
+if not os.path.exists(snap):
+  print('')
+  raise SystemExit
+lines=open(snap,'r',encoding='utf-8',errors='replace').read().splitlines()
+boiler=set([
+  "Don’t miss what’s happening People on X are the first to know.",
+  "Don't miss what's happening People on X are the first to know.",
+])
+
+def slugify(s):
+  s=s.strip().strip('"')
+  s=re.sub(r"\s+","-",s)
+  s=re.sub(r"[^A-Za-z0-9\u4e00-\u9fff\-]+","",s)
+  s=re.sub(r"-+","-",s).strip('-')
+  return s[:80]
+
+title=''
+for ln in lines:
+  m=re.match(r"\s*-\s*text:\s*(.+)$",ln)
+  if not m: continue
+  t=m.group(1).strip().strip('"')
+  if not t or t in boiler: continue
+  if len(t)>140: continue
+  if t.lower() in {"sign up","log in","new to x?","trending now","what’s happening","what's happening"}: continue
+  title=t
+  break
+print(slugify(title) if title else '')
+PY
+"$tmp_dir")
+
+    out_dir="$tmp_dir"
+    if [ -n "$new_name" ]; then
+      candidate="$OUT_BASE/$new_name"
+      if [ "$candidate" != "$tmp_dir" ]; then
+        if [ -e "$candidate" ]; then
+          candidate="$OUT_BASE/${new_name}-${tweet_id}"
+        fi
+        mv "$tmp_dir" "$candidate"
+        out_dir="$candidate"
+      fi
+    fi
+
     DIR="$out_dir" URL="$url" assemble_md "$out_dir" "$url" >/dev/null
     ;;
 
