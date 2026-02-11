@@ -71,6 +71,7 @@ boiler = {
 }
 
 def guess_title(lines):
+  author = (meta.get('author_name') or '').strip()
   for ln in lines:
     m = re.match(r"\s*-\s*text:\s*(.+)$", ln)
     if not m:
@@ -78,11 +79,13 @@ def guess_title(lines):
     t = m.group(1).strip().strip('"')
     if not t or t in boiler:
       continue
+    if author and t == author:
+      continue
     # Skip giant paragraphs; title is usually short.
     if len(t) > 140:
       continue
-    # Prefer something title-cased / not UI labels.
-    if t.lower() in {"sign up", "log in", "new to x?", "trending now", "what’s happening", "what's happening"}:
+    # Skip common UI labels.
+    if t.lower() in {"sign up", "log in", "new to x?", "trending now", "what’s happening", "what's happening", "article", "conversation"}:
       continue
     return t
   return meta.get('title') or meta.get('provider_name') or 'X Post'
@@ -169,8 +172,16 @@ case "$mode" in
 
     # Rename directory to article title (slug) when possible.
     new_name=$(python3 - "$tmp_dir" <<'PY'
-import os,re,sys
+import os,re,sys,json
 base = sys.argv[1]
+meta_p=os.path.join(base,'.meta.json')
+author=''
+if os.path.exists(meta_p):
+  try:
+    author=json.load(open(meta_p,'r',encoding='utf-8')).get('author_name','').strip()
+  except Exception:
+    author=''
+
 snap=os.path.join(base,'.snapshot.txt')
 if not os.path.exists(snap):
   print('')
@@ -194,8 +205,9 @@ for ln in lines:
   if not m: continue
   t=m.group(1).strip().strip('"')
   if not t or t in boiler: continue
+  if author and t == author: continue
   if len(t)>140: continue
-  if t.lower() in {"sign up","log in","new to x?","trending now","what’s happening","what's happening"}: continue
+  if t.lower() in {"sign up","log in","new to x?","trending now","what’s happening","what's happening","article","conversation"}: continue
   title=t
   break
 print(slugify(title) if title else '')
