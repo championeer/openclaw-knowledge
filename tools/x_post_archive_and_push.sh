@@ -52,6 +52,9 @@ imgs = []
 if os.path.exists(images_path):
   try:
     imgs = json.load(open(images_path,'r',encoding='utf-8'))
+    # x-post-archiver may write a JSON-encoded string that itself contains JSON
+    if isinstance(imgs, str):
+      imgs = json.loads(imgs)
   except Exception:
     imgs = []
 
