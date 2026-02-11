@@ -1,0 +1,132 @@
+- document:
+  - text: Don’t miss what’s happening People on X are the first to know.
+  - link "Log in" [ref=e1]:
+    - /url: /login
+  - link "Sign up" [ref=e2]:
+    - /url: /i/flow/signup
+  - button "Skip to home timeline" [ref=e3]
+  - button "Skip to trending" [ref=e4]
+  - banner:
+    - heading "X" [ref=e5] [level=1]:
+      - link "X" [ref=e6]:
+        - /url: /
+    - navigation "Primary" [ref=e7]
+  - main:
+    - button "Back" [ref=e8]
+    - heading "Article" [ref=e9] [level=2]
+    - link "Focus mode" [ref=e10]:
+      - /url: /wlzh/article/2021427911174258737
+    - status
+    - region "Conversation" [ref=e11]:
+      - heading "Conversation" [ref=e12] [level=1]
+      - article "M. Verified account @wlzh 1 reply, 5 likes, 8 bookmarks, 345 views" [ref=e13]:
+        - link "M. Verified account" [ref=e14]:
+          - /url: /wlzh
+          - text: M.
+          - img "Verified account"
+        - link "@wlzh" [ref=e15]:
+          - /url: /wlzh
+        - button "More" [ref=e16]
+        - link "Image" [ref=e17]:
+          - /url: /wlzh/article/2021427911174258737/media/2021427285279281152
+          - img "Image"
+        - text: 搞定OpenClaw 多层备份策略，解决经常把自己玩死的噩梦
+        - group "1 reply, 5 likes, 8 bookmarks, 345 views":
+          - button "1 Reply. Reply" [ref=e18]: "1"
+          - button "0 reposts. Repost" [ref=e19]
+          - button "5 Likes. Like" [ref=e20]: "5"
+          - link "345 views. View post analytics" [ref=e21]:
+            - /url: /wlzh/status/2021427911174258737/analytics
+            - text: "345"
+          - button "Bookmark" [ref=e22]
+          - button "Share post" [ref=e23]
+        - text: "别再把自己坑了！OpenClaw 多层备份策略拯救你的配置，彻底解决经常把自己玩死的噩梦 你有没有过这样的经历：兴冲冲地改了配置，结果整个系统起不来，一脸懵逼？ 自从Zenmux 第一时间上线claude-opus-4.6 后，这几天一直在深度使用，选的适合个人的订阅制Max套餐 这几天情况是，平台好，模型好，可这个配置经常被OpenClaw把自己搞死，整个系统瘫痪掉 😱 问题的根源 OpenClaw 的配置文件 openclaw.json 是整个系统的心脏。但这个心脏有个致命的弱点： 手滑改错一个逗号，整个系统就挂了。 { \"models\": { \"providers\": { \"Zenmux\": { \"apiKey\": \"xxx\", // ← 少了个逗号 \"baseUrl\": \""
+        - link "https://zenmux.ai/api/v1" [ref=e24]:
+          - /url: https://zenmux.ai/api/v1
+        - text: "\" } // ← 或者这里多了个逗号 } } } 结果：Gateway 起不来，服务挂掉，一脸懵逼。 🛡️ 解决方案：三层备份防护系统 我们构建了一个多层防护体系，确保无论你怎么折腾，都不会把系统彻底搞死。 ┌─────────────────────────────────────────────────────────┐ │ OpenClaw 配置防护系统 │ └─────────────────────────────────────────────────────────┘ │ ├─ 第一层：Patch 自动备份（修改前） │ └─ 📁 config-backup-auto/ │ └─ openclaw.json.backup-20260211-103406 │ ├─ 第二层：Cron 自动备份（每5分钟） │ └─ 📁 config-backup.git/ │ └─ Git 完整历史 + daily 标签 │ └─ 第三层：系统自带备份 └─ 📁 openclaw.json.bak* └─ 5-10 个版本 第一层：Patch 自动备份 📁 触发时机: 每次 config.patch 之前 工作原理:"
+        - heading "自动执行" [ref=e25] [level=1]
+        - text: "cp openclaw.json \\ config-backup-auto/openclaw.json.backup-$(date +%Y%m%d-%H%M%S) 保留策略: 最近 10 次备份，旧自动清理 恢复速度: ⚡⚡⚡ 超快 适用场景: 修改配置后的紧急恢复 第二层：Cron 自动备份 📦 触发时机: 每 5 分钟自动执行 工作原理:"
+        - heading "Cron 任务" [ref=e26] [level=1]
+        - text: "*/5 * * * * /path/to/config-backup-cron.sh 备份内容: • openclaw.json - 主配置 • 所有 workspace 配置文件 •"
+        - link "AGENTS.md" [ref=e27]:
+          - /url: //AGENTS.md
+        - text: ","
+        - link "MEMORY.md" [ref=e28]:
+          - /url: //MEMORY.md
+        - text: "等关键文档 保留策略: • Git 完整历史（可随时回滚到任意版本） • 每天自动打 daily-01 ~ daily-31 标签（循环覆盖） • 每月 1 号清理旧对象 恢复速度: ⚡⚡ 中等 适用场景: 找回几天前的配置 第三层：系统自带备份 🔄 触发时机: OpenClaw 内部机制 工作原理: openclaw.json openclaw.json.bak ← 最新 openclaw.json.bak.1 ← 上次 openclaw.json.bak.2 ← 上上次 ... 保留策略: 约 5-10 个版本 恢复速度: ⚡⚡⚡ 超快 适用场景: 快速回退到上一个稳定版本 🚀 使用指南 修改配置（安全方式）"
+        - heading "使用 config.patch（推荐）" [ref=e29] [level=1]
+        - text: "gateway config.patch '{\"models\":{\"providers\":{\"groq\":{\"apiKey\":\"xxx\"}}}}' 为什么安全？ • ✅ 自动验证 JSON 语法 • ✅ 语法错误直接拒绝，不破坏原文件 • ✅ 自动合并配置，不会覆盖其他设置 紧急恢复 方式1：恢复最新 Patch 备份 ls -lt config-backup-auto/openclaw.json.backup-* | head -1 cp <最新备份> openclaw.json 方式2：使用 Cron 备份 cd config-backup.git git log --oneline -5 # 查看最近提交 git show <commit>:openclaw.json > /Users/m./.openclaw/openclaw.json 方式3：使用系统备份 cp openclaw.json.bak openclaw.json 最后重启 Gateway gateway restart 📊 对比表 备份类型 位置 触发时机 保留策略 恢复速度 适用场景 Patch 自动备份 config-backup-auto/ 每次 patch 最近10次 ⚡⚡⚡ 修改后紧急恢复 Cron Git 备份 config-backup.git/ 每5分钟 完整历史 ⚡⚡ 找回几天前的配置 系统自带备份 openclaw.json.bak* 系统内部 5-10个 ⚡⚡⚡ 快速回退 🎯 最佳实践 ✅ DO 1. 永远用 config.patch 修改配置 gateway config.patch '{\"key\":\"value\"}' 2. 大改动前手动备份 cp openclaw.json openclaw.json.backup-$(date +%Y%m%d-%H%M%S) 3. 修改后验证 gateway config.get ❌ DON'T 1. ❌ 永远不要直接用 vim/nano 编辑 openclaw.json 2. ❌ 不要复制别人的配置文件直接覆盖 3. ❌ 不要在未验证的情况下重启 Gateway 💡 为什么这个策略有用？ 1. 多层防护 三层备份，任何一层都能救你。 2. 自动备份 无需手动，系统自己帮你备份。 3. 时间粒度 • 每次修改前（Patch 备份） • 每5分钟（Cron 备份） • 系统内部（自带备份） 4. 恢复灵活 • 秒级恢复（Patch 备份） • 历史回溯（Git 备份） • 快速回退（系统备份） 5. 容错性强 就算你把配置改得一团糟，也不会把系统彻底搞死。 🎨 配图建议 图1：三层备份架构图 ┌─────────────────────────────────────────────────────────┐ │ 用户修改配置 │ └─────────────────────────────────────────────────────────┘ │ ▼ ┌─────────────────────────────────────────────────────────┐ │ 第一层：Patch 自动备份 │ │ 📁 config-backup-auto/ │ │ └─ openclaw.json.backup-YYYYMMDD-HHMMSS │ └─────────────────────────────────────────────────────────┘ │ ▼ ┌─────────────────────────────────────────────────────────┐ │ 第二层：Cron 自动备份 │ │ 📁 config-backup.git/ │ │ └─ Git 历史 + daily 标签 │ └─────────────────────────────────────────────────────────┘ │ ▼ ┌─────────────────────────────────────────────────────────┐ │ 第三层：系统自带备份 │ │ 📁 openclaw.json.bak* │ └─────────────────────────────────────────────────────────┘ 图2：配置修改安全流程 ┌─────────┐ ┌──────────┐ ┌────────────┐ ┌──────────┐ │ 用户请求 │───▶│ Patch 自动│───▶│ 验证当前 │───▶│ 应用 │ │ 修改配置 │ │ 备份 │ │ 配置 │ │ patch │ └─────────┘ └──────────┘ └────────────┘ └──────────┘ │ ▼ ┌────────────┐ │ 验证新配置 │ └────────────┘ │ ┌───────────────┴───────────────┐ │ │ ▼ ▼ ┌─────────────┐ ┌─────────────┐ │ 成功 ✅ │ │ 失败 ❌ │ │ 完成 │ │ 自动回滚 │ └─────────────┘ └─────────────┘ 图3：备份文件对比表 （参考文章中的对比表，可设计成图表形式） 🚀 总结 核心原则 永远不要直接编辑配置文件！用 config.patch，让系统帮你保护自己。 三层备份 1. Patch 自动备份 - 秒级恢复 2. Cron Git 备份 - 历史回溯 3. 系统自带备份 - 快速回退 效果 再也不怕配置错误导致系统崩溃了！ 🎉 🔗 相关资源 • OpenClaw 配置文档:"
+        - link "https://docs.openclaw.ai" [ref=e30]:
+          - /url: https://docs.openclaw.ai
+        - text: "• 本项目备份脚本: /path/to/config-backup-cron.sh • 安全配置工具: /path/to/safe-patch.sh • Zenmux官网："
+        - link "https://zenmux.ai/invite/MRLHLZ" [ref=e31]:
+          - /url: https://zenmux.ai/invite/MRLHLZ
+        - text: 觉得有用？分享给同样在 OpenClaw 配置中挣扎的朋友吧！ 😄
+        - link "#OpenClaw" [ref=e32]:
+          - /url: https://x.com/search?q=%23OpenClaw&src=hashtag_click
+        - link "#ConfigManagement" [ref=e33]:
+          - /url: https://x.com/search?q=%23ConfigManagement&src=hashtag_click
+        - link "#BackupStrategy" [ref=e34]:
+          - /url: https://x.com/search?q=%23BackupStrategy&src=hashtag_click
+        - link "#DevOps" [ref=e35]:
+          - /url: https://x.com/search?q=%23DevOps&src=hashtag_click
+        - link "#TechTips" [ref=e36]:
+          - /url: https://x.com/search?q=%23TechTips&src=hashtag_click
+        - status:
+          - text: Want to publish your own Article?
+          - link "Upgrade to Premium" [ref=e37]:
+            - /url: /i/premium_sign_up
+        - link "11:35 AM · Feb 11, 2026" [ref=e38]:
+          - /url: /wlzh/status/2021427911174258737
+          - time: 11:35 AM · Feb 11, 2026
+        - link "345 Views" [ref=e39]:
+          - /url: /wlzh/status/2021427911174258737/analytics
+        - group "1 reply, 5 likes, 8 bookmarks, 345 views":
+          - button "1 Reply. Reply" [ref=e40] [nth=1]: "1"
+          - button "0 reposts. Repost" [ref=e41] [nth=1]
+          - button "5 Likes. Like" [ref=e42] [nth=1]: "5"
+          - button "8 Bookmarks. Bookmark" [ref=e43]: "8"
+          - button "Share post" [ref=e44] [nth=1]
+    - region "Sign up" [ref=e45]:
+      - heading "New to X?" [ref=e46] [level=2]
+      - text: Sign up now to get your own personalized timeline!
+      - iframe
+      - button "Sign up with Apple" [ref=e47]
+      - link "Create account" [ref=e48]:
+        - /url: /i/flow/signup
+      - text: By signing up, you agree to the
+      - link "Terms of Service" [ref=e49]:
+        - /url: https://x.com/tos
+      - text: and
+      - link "Privacy Policy" [ref=e50]:
+        - /url: https://x.com/privacy
+      - text: ", including"
+      - link "Cookie Use." [ref=e51]:
+        - /url: https://help.x.com/rules-and-policies/twitter-cookies
+    - region "Trending now" [ref=e52]:
+      - heading "Trending now" [ref=e53] [level=1]
+      - heading "What’s happening" [ref=e54] [level=2]
+      - link "Trending worldwide エスコン" [ref=e55]
+      - 'link "Other competition · Trending #ParedaoBBB"'
+      - link "Music · Trending 西島隆弘" [ref=e56]
+      - link "Sports · Trending 練習試合" [ref=e57]
+      - link "Show more" [ref=e58]:
+        - /url: /explore/tabs/for-you
+    - navigation "Footer" [ref=e59]:
+      - link "Terms of Service" [ref=e60] [nth=1]:
+        - /url: https://x.com/tos
+      - text: "|"
+      - link "Privacy Policy" [ref=e61] [nth=1]:
+        - /url: https://x.com/privacy
+      - text: "|"
+      - link "Cookie Policy" [ref=e62]:
+        - /url: https://support.x.com/articles/20170514
+      - text: "|"
+      - link "Accessibility" [ref=e63]:
+        - /url: https://help.x.com/resources/accessibility
+      - text: "|"
+      - link "Ads info" [ref=e64]:
+        - /url: https://business.x.com/en/help/troubleshooting/how-twitter-ads-work.html?ref=web-twc-ao-gbl-adsinfo&utm_source=twc&utm_medium=web&utm_campaign=ao&utm_content=adsinfo
+      - text: "|"
+      - button "More" [ref=e65] [nth=1]
+      - text: © 2026 X Corp.
