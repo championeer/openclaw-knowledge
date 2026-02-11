@@ -1,0 +1,174 @@
+- document:
+  - text: Don’t miss what’s happening People on X are the first to know.
+  - link "Log in" [ref=e1]:
+    - /url: /login
+  - link "Sign up" [ref=e2]:
+    - /url: /i/flow/signup
+  - button "Skip to home timeline" [ref=e3]
+  - button "Skip to trending" [ref=e4]
+  - banner:
+    - heading "X" [ref=e5] [level=1]:
+      - link "X" [ref=e6]:
+        - /url: /
+    - navigation "Primary" [ref=e7]
+  - main:
+    - button "Back" [ref=e8]
+    - heading "Article" [ref=e9] [level=2]
+    - link "Focus mode" [ref=e10]:
+      - /url: /calicastle/article/2021229394724102229
+    - status
+    - region "Conversation" [ref=e11]:
+      - heading "Conversation" [ref=e12] [level=1]
+      - article "Cali Castle Verified account @calicastle 8 replies, 28 reposts, 176 likes, 359 bookmarks, 10863 views" [ref=e13]:
+        - link "Cali Castle Verified account" [ref=e14]:
+          - /url: /calicastle
+          - text: Cali Castle
+          - img "Verified account"
+        - link "@calicastle" [ref=e15]:
+          - /url: /calicastle
+        - button "More" [ref=e16]
+        - link "Image" [ref=e17]:
+          - /url: /calicastle/article/2021229394724102229/media/2021224860618457090
+          - img "Image"
+        - text: 如何给 OpenClaw 搭建一套「永不失忆」的记忆系统
+        - group "8 replies, 28 reposts, 176 likes, 359 bookmarks, 10863 views":
+          - button "8 Replies. Reply" [ref=e18]: "8"
+          - button "28 reposts. Repost" [ref=e19]: "28"
+          - button "176 Likes. Like" [ref=e20]: "176"
+          - link "10863 views. View post analytics" [ref=e21]:
+            - /url: /calicastle/status/2021229394724102229/analytics
+            - text: 10K
+          - button "Bookmark" [ref=e22]
+          - button "Share post" [ref=e23]
+        - text: 从丢失两天记忆到三层自动化架构，一个完整的踩坑教程。 我的设置条件：
+        - list:
+          - listitem: Mac mini 上 24/7 运行着 OpenClaw
+          - listitem:
+            - text: 启用了 qmd 记忆 memory_backend (
+            - link "https://docs.openclaw.ai/concepts/memory#qmd-backend-experimental" [ref=e24]:
+              - /url: https://docs.openclaw.ai/concepts/memory#qmd-backend-experimental
+            - text: )
+          - listitem: 通过 Claude 订阅获取的 token
+        - separator
+        - text: 我的 AI agent 失忆了。 不是那种「哎呀我忘了你喜欢喝什么咖啡」的小失忆，是整整两天的对话、决策、action items，全部蒸发。 像你精心写了两天的文档，结果忘了按 Cmd+S。 事情是这样的：我用 OpenClaw 跑了一套 main agent + sub-agents 的系统，前三天一切丝滑，agent 记得我的偏好，知道项目进度，甚至能 reference 前天讨论的某个技术细节。 我当时觉得，这就是未来。 快进到第四天。 我问它：「昨天那个 Linear issue 的结论是什么？」 它一脸无辜：「我没有找到相关的上下文。」 两天的 context，没了。因为 session 过期了，context window 刷新了，而我压根没有任何自动化的记忆捕获机制。 这挺蠢的。 这就像你雇了一个天才员工，但每天早上他走进办公室，都不记得昨天发生了什么。 所以我花了一个周末，搭了一套三层记忆系统。现在我的 agent 真的「永不失忆」了。以下是完整的搭建教程，你可以照着做，也可以直接把这篇文章喂给你的 agent 让它自己执行。
+        - separator
+        - text: 核心架构：三层记忆 + 语义搜索 先说整体思路。其实记忆系统的设计跟做产品的信息架构很像。你需要不同粒度的信息层，每一层有自己的更新频率和生命周期。 我的方案是这样的：
+        - list:
+          - listitem: Layer 1：Daily Context Sync 每天自动捕获，粒度最细
+          - listitem: Layer 2：Weekly Memory Compound 每周知识蒸馏，去粗取精
+          - listitem: Layer 3：Hourly Micro-Sync 白天的安全网，防止遗漏
+          - listitem: 底层：Vector Search 语义检索，让 agent 能搜索自己的过去
+        - text: 文件结构长这样： markdown
+        - button "Copy to clipboard" [ref=e25]
+        - code: "workspace/ ├── MEMORY.md # 主记忆文件，每次 session 自动注入 ├── AGENTS.md # Agent 行为规则 ├── memory/ │ ├── 2026-02-07.md # 每日日志 │ ├── 2026-02-08.md │ ├── 2026-02-09.md │ ├── 2026-02-10.md │ ├── team.md # 长期参考文件 │ ├── projects.md │ └── zolplay.md"
+        - link "MEMORY.md" [ref=e26]:
+          - /url: //MEMORY.md
+        - text: 是精华中的精华，保持精简，每个 session 启动时自动注入到 agent 的 context 里。memory/ 目录下的日志文件是原始素材，按需检索。 这个分层很关键。你不能把所有东西都塞进 context window，那是把整个图书馆搬进考场，不如带一张精心整理的 cheat sheet，需要查资料时再去翻书。
+        - separator
+        - text: Layer 1：Daily Context Sync（每晚自动捕获） 这是整个系统的基石。每天晚上 11 点，一个 cron job 自动触发，spawn 一个独立的 agent（用 Sonnet，便宜够用），它会：
+        - list:
+          - listitem: 调用 sessions_list 拉取当天所有 session
+          - listitem: 用 sessions_history 读取每个 session 的完整对话
+          - listitem: 蒸馏成一份结构化的日志，写入 memory/YYYY-MM-DD.md
+          - listitem: 跑 qmd update 和 qmd embed 重新索引向量搜索
+        - text: Cron 配置： json
+        - button "Copy to clipboard" [ref=e27] [nth=1]
+        - code: "{ \"name\": \"Daily Memory Sync (11 PM)\", \"schedule\": { \"kind\": \"cron\", \"expr\": \"0 23 * * *\", \"tz\": \"Asia/Taipei\" }, \"payload\": { \"kind\": \"agentTurn\", \"message\": \"DAILY MEMORY SYNC — pull sessions_list for today, read sessions_history for each, distill key decisions/action items/conversations into memory/YYYY-MM-DD.md with ## headers and bullet points, then run qmd update && qmd embed\", \"model\": \"anthropic/claude-sonnet-4-5\" }, \"sessionTarget\": \"isolated\" }"
+        - text: 几个要点： sessionTarget 设成 isolated，这样记忆同步不会污染你的主 session。用 Sonnet 而不是 Opus，因为这是个蒸馏任务，不需要最强的推理能力，省钱。日志文件用结构化的 markdown 格式：## 标题分区，bullet points 列要点，这样后续的语义搜索效果更好。 每日日志大概长这样： markdown
+        - button "Copy to clipboard" [ref=e28] [nth=2]
+        - code: "# 2026-02-09 Daily Log ## Decisions Made - 决定用 three-layer memory architecture 替代单文件方案 - Linear project ZOLPLAY-142 优先级调整为 urgent ## Action Items - [ ] 完成 qmd vector search 集成 - [x] 修复 cron timezone 配置 bug ## Key Conversations - 讨论了 agent memory 的最佳实践 - Review 了新的 landing page 设计稿，反馈已同步到 Figma ## Technical Notes - qmd embed 需要在每次 memory 写入后执行才能保持索引新鲜"
+        - separator
+        - text: Layer 2：Weekly Memory Compound（每周知识复利） 日志是原始素材，但你不能让 agent 每次启动都读七天的日志，太长了，噪音太多。 所以每周日晚上 10 点，另一个 cron job 会触发「知识复利」流程：
+        - list:
+          - listitem: 读取本周全部 7 个日志文件
+          - listitem:
+            - text: 更新
+            - link "MEMORY.md" [ref=e29] [nth=1]:
+              - /url: //MEMORY.md
+            - text: ，提取新的偏好、决策模式、项目状态变化
+          - listitem: 剪枝，删除过时的信息
+          - listitem: 重新索引 qmd
+        - text: json
+        - button "Copy to clipboard" [ref=e30] [nth=3]
+        - code: "{ \"name\": \"Weekly Memory Compound (Sunday 10 PM)\", \"schedule\": { \"kind\": \"cron\", \"expr\": \"0 22 * * 0\", \"tz\": \"Asia/Taipei\" }, \"payload\": { \"kind\": \"agentTurn\", \"message\": \"WEEKLY MEMORY COMPOUND — read all memory/YYYY-MM-DD.md files from this week, update MEMORY.md with new preferences, decision patterns, project status changes, prune stale info, then run qmd update && qmd embed\", \"model\": \"anthropic/claude-sonnet-4-5\" }, \"sessionTarget\": \"isolated\" }"
+        - text: 我把这个叫「知识复利」是有原因的。每一周的蒸馏都会让
+        - link "MEMORY.md" [ref=e31] [nth=2]:
+          - /url: //MEMORY.md
+        - text: 变得更精准、更懂你。 这种积累是指数级的。
+        - separator
+        - text: Layer 3：Hourly Micro-Sync（安全网） 光有每晚的全量同步还不够。如果你下午三点做了一个重要决策，到晚上十一点才捕获，中间如果有其他 session 需要这个 context 怎么办？ 所以我加了一层安全网，白天每隔几个小时做一次轻量级检查： json
+        - button "Copy to clipboard" [ref=e32] [nth=4]
+        - code: "{ \"name\": \"Hourly Micro-Sync\", \"schedule\": { \"kind\": \"cron\", \"expr\": \"0 10,13,16,19,22 * * *\", \"tz\": \"Asia/Taipei\" }, \"payload\": { \"kind\": \"agentTurn\", \"message\": \"MICRO-SYNC — check if meaningful activity happened in last 3 hours via sessions_list. If yes, append a brief summary note to today's memory/YYYY-MM-DD.md and run qmd update && qmd embed. If nothing notable, do nothing silently.\", \"model\": \"anthropic/claude-sonnet-4-5\" }, \"sessionTarget\": \"isolated\" }"
+        - text: 注意几个设计细节： 不是每小时都跑，选了 10 点、1 点、4 点、7 点、10 点这五个时间段，覆盖工作时间。它是 append 模式，不会覆盖之前的内容。如果最近三小时没有什么有意义的活动，它什么都不做，安静退出。不发通知，这层就是个安静的安全网，你甚至感知不到它的存在。
+        - separator
+        - text: 底层：Vector Search（语义搜索） 三层记忆解决了「写入」的问题，但「读取」同样关键。你不能让 agent 每次都读完所有文件，那也太慢太贵了。 这就是 qmd 的作用。它提供语义搜索能力，结合了 BM25 关键词搜索和 vector search 向量搜索，还有 reranking。 用法很简单： bash
+        - button "Copy to clipboard" [ref=e33] [nth=5]
+        - code: qmd query "上周关于 landing page 的讨论结论是什么"
+        - text: 它会在所有记忆文件里搜索，返回最相关的片段。 关键配置是在
+        - link "AGENTS.md" [ref=e34]:
+          - /url: //AGENTS.md
+        - text: 里写明规则： markdown
+        - button "Copy to clipboard" [ref=e35] [nth=6]
+        - code: "## Memory Retrieval (MANDATORY) Never read MEMORY.md or memory/*.md in full for lookups. Use qmd: 1. qmd query \"<question>\" — combined search with reranking 2. qmd get <file>:<line> -l 20 — pull only the snippet you need 3. Only if qmd returns nothing: fall back to reading files"
+        - text: 这条规则很重要。它强制 agent 用搜索而不是暴力读取。就像你不会为了查一个单词把整本词典从头翻到尾，你直接查索引。 每次记忆写入后都要跑 qmd update 和 qmd embed 来保持索引新鲜。这就是为什么上面每个 cron job 的最后一步都有这两个命令。 效果怎么样 搭完这套系统之后，体感变化是立竿见影的。 以前每次新 session 开始，agent 都像个新来的实习生，什么都要重新解释。现在它启动就带着
+        - link "MEMORY.md" [ref=e36] [nth=3]:
+          - /url: //MEMORY.md
+        - text: 的完整 context，知道我是谁，知道项目在什么阶段，知道上次讨论到哪了。 需要回忆更久远的细节？它会自动用 qmd 搜索，几秒钟就能找到三天前某次对话的具体结论。 最让我惊喜的是 weekly compound 的效果。跑了两轮之后，
+        - link "MEMORY.md" [ref=e37] [nth=4]:
+          - /url: //MEMORY.md
+        - text: 里关于我的工作习惯的描述准确得有点吓人。它甚至总结出了我 review 代码时的偏好模式，这些东西我自己都没明确意识到。 我的核心观点 搭完这套系统之后，我越来越相信一件事： Memory infrastructure 比 agent intelligence 重要得多。 我们现在整个行业都在卷模型能力，更大的 context window，更强的推理，更快的响应。但其实，一个有完善记忆系统的普通模型，比一个失忆的顶级模型有用得多。 这跟人一样。一个记忆力好、做事有条理的普通人，长期表现往往好过一个聪明但丢三落四的天才。 所以如果你也在跑 OpenClaw 或者自建 AI agent，我的建议是：别急着换最新的模型，先把记忆基础设施搭好。这是投资回报率最高的事情。 感谢
+        - link "@ericosiu" [ref=e38]:
+          - /url: https://x.com/@ericosiu
+        - text: 关于 agent memory infrastructure 的文章，给了我最初的灵感。在他的框架基础上，我加了 hourly micro-sync 安全网和 vector search 语义检索层，适配了 OpenClaw 的 cron 和 isolated session 机制。站在巨人肩膀上，永远是最快的路。 这套系统我已经跑了一周，目前零失忆。
+        - status:
+          - text: Want to publish your own Article?
+          - link "Upgrade to Premium" [ref=e39]:
+            - /url: /i/premium_sign_up
+        - link "10:26 PM · Feb 10, 2026" [ref=e40]:
+          - /url: /calicastle/status/2021229394724102229
+          - time: 10:26 PM · Feb 10, 2026
+        - link "10.8K Views" [ref=e41]:
+          - /url: /calicastle/status/2021229394724102229/analytics
+        - group "8 replies, 28 reposts, 176 likes, 359 bookmarks, 10863 views":
+          - button "8 Replies. Reply" [ref=e42] [nth=1]: "8"
+          - button "28 reposts. Repost" [ref=e43] [nth=1]: "28"
+          - button "176 Likes. Like" [ref=e44] [nth=1]: "176"
+          - button "359 Bookmarks. Bookmark" [ref=e45]: "359"
+          - button "Share post" [ref=e46] [nth=1]
+        - button "Read 8 replies" [ref=e47]
+    - region "Sign up" [ref=e48]:
+      - heading "New to X?" [ref=e49] [level=2]
+      - text: Sign up now to get your own personalized timeline!
+      - iframe
+      - button "Sign up with Apple" [ref=e50]
+      - link "Create account" [ref=e51]:
+        - /url: /i/flow/signup
+      - text: By signing up, you agree to the
+      - link "Terms of Service" [ref=e52]:
+        - /url: https://x.com/tos
+      - text: and
+      - link "Privacy Policy" [ref=e53]:
+        - /url: https://x.com/privacy
+      - text: ", including"
+      - link "Cookie Use." [ref=e54]:
+        - /url: https://help.x.com/rules-and-policies/twitter-cookies
+    - text: Something went wrong. Try reloading.
+    - button "Retry" [ref=e55]
+    - navigation "Footer" [ref=e56]:
+      - link "Terms of Service" [ref=e57] [nth=1]:
+        - /url: https://x.com/tos
+      - text: "|"
+      - link "Privacy Policy" [ref=e58] [nth=1]:
+        - /url: https://x.com/privacy
+      - text: "|"
+      - link "Cookie Policy" [ref=e59]:
+        - /url: https://support.x.com/articles/20170514
+      - text: "|"
+      - link "Accessibility" [ref=e60]:
+        - /url: https://help.x.com/resources/accessibility
+      - text: "|"
+      - link "Ads info" [ref=e61]:
+        - /url: https://business.x.com/en/help/troubleshooting/how-twitter-ads-work.html?ref=web-twc-ao-gbl-adsinfo&utm_source=twc&utm_medium=web&utm_campaign=ao&utm_content=adsinfo
+      - text: "|"
+      - button "More" [ref=e62] [nth=1]
+      - text: © 2026 X Corp.
