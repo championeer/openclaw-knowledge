@@ -168,9 +168,10 @@ case "$mode" in
     bash "$DL_SH" download "$url" "$tmp_dir" "$@"
 
     # Rename directory to article title (slug) when possible.
-    new_name=$(python3 - <<'PY'
+    new_name=$(python3 - "$tmp_dir" <<'PY'
 import os,re,sys
-snap=os.path.join(sys.argv[1],'.snapshot.txt')
+base = sys.argv[1]
+snap=os.path.join(base,'.snapshot.txt')
 if not os.path.exists(snap):
   print('')
   raise SystemExit
@@ -199,7 +200,7 @@ for ln in lines:
   break
 print(slugify(title) if title else '')
 PY
-"$tmp_dir")
+)
 
     out_dir="$tmp_dir"
     if [ -n "$new_name" ]; then
