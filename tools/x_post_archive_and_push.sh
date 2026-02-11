@@ -8,7 +8,11 @@ set -euo pipefail
 # Options (pass-through to download.sh): e.g. --resume --no-images --timeout 12
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SKILL_DIR="$HOME/.openclaw/skills/x-post-archiver"
+# Prefer OpenClaw-optimized variant if present
+SKILL_DIR="$HOME/.openclaw/skills/x-post-archiver-openclaw"
+if [ ! -d "$SKILL_DIR" ]; then
+  SKILL_DIR="$HOME/.openclaw/skills/x-post-archiver"
+fi
 DL_SH="$SKILL_DIR/scripts/download.sh"
 OUT_BASE="$REPO_DIR/x-post-archives"
 
@@ -60,11 +64,24 @@ def load_images(p):
 
 imgs = load_images(images_path)
 
-snapshot = ''
+snapshot = []
 if os.path.exists(snap_path):
   snapshot = open(snap_path,'r',encoding='utf-8',errors='replace').read().splitlines()
 
-# Heuristic: title = first short `- text:` line that isn't boilerplate.
+# Prefer DOM-extracted title/content if present (x-post-archiver-openclaw)
+content_p = os.path.join(DIR, '.content.json')
+dom_title = ''
+dom_text = ''
+if os.path.exists(content_p):
+  try:
+    v = json.load(open(content_p,'r',encoding='utf-8'))
+    if isinstance(v, str):
+      v = json.loads(v)
+    dom_title = (v.get('title') or '').strip()
+    dom_text = (v.get('text') or '').strip()
+  except Exception:
+    pass
+
 boiler = {
   "Don’t miss what’s happening People on X are the first to know.",
   "Don't miss what's happening People on X are the first to know.",
@@ -81,50 +98,49 @@ def guess_title(lines):
       continue
     if author and t == author:
       continue
-    # Skip giant paragraphs; title is usually short.
     if len(t) > 140:
       continue
-    # Skip common UI labels.
     if t.lower() in {"sign up", "log in", "new to x?", "trending now", "what’s happening", "what's happening", "article", "conversation"}:
       continue
     return t
   return meta.get('title') or meta.get('provider_name') or 'X Post'
 
-title = meta.get('title') or guess_title(snapshot)
+snapshot_title = guess_title(snapshot)
+title = (meta.get('title') or '').strip() or dom_title or snapshot_title
 
-# Extract article body from within the first `- article "..."` block.
-# We collect `- text:` entries and keep them as paragraphs.
+# Prefer DOM text; fallback to snapshot parsing.
+paras = []
+if dom_text:
+  paras = [p.strip() for p in re.split(r"\n\s*\n", dom_text) if p.strip()]
+else:
+  def extract_body(lines):
+    in_article = False
+    base_indent = None
+    out = []
+    for ln in lines:
+      if not in_article:
+        if re.search(r"-\s*article\s+\"", ln):
+          in_article = True
+          base_indent = len(ln) - len(ln.lstrip(' '))
+        continue
 
-def extract_body(lines):
-  in_article = False
-  base_indent = None
-  out = []
-  for ln in lines:
-    if not in_article:
-      if re.search(r"-\s*article\s+\"", ln):
-        in_article = True
-        base_indent = len(ln) - len(ln.lstrip(' '))
-      continue
+      indent = len(ln) - len(ln.lstrip(' '))
+      if indent <= (base_indent or 0):
+        break
 
-    indent = len(ln) - len(ln.lstrip(' '))
-    if indent <= (base_indent or 0):
-      # article block ended
-      break
+      tm = re.match(r"\s*-\s*text:\s*(.+)$", ln)
+      if tm:
+        txt = tm.group(1).strip().strip('"')
+        if txt and txt not in boiler:
+          out.append(txt)
+    cleaned = []
+    for p in out:
+      if cleaned and cleaned[-1] == p:
+        continue
+      cleaned.append(p)
+    return cleaned
 
-    tm = re.match(r"\s*-\s*text:\s*(.+)$", ln)
-    if tm:
-      txt = tm.group(1).strip().strip('"')
-      if txt and txt not in boiler:
-        out.append(txt)
-  # De-dup consecutive duplicates
-  cleaned = []
-  for p in out:
-    if cleaned and cleaned[-1] == p:
-      continue
-    cleaned.append(p)
-  return cleaned
-
-paras = extract_body(snapshot)
+  paras = extract_body(snapshot)
 
 md = []
 md.append(f"# {title}")
@@ -171,9 +187,12 @@ case "$mode" in
     bash "$DL_SH" download "$url" "$tmp_dir" "$@"
 
     # Rename directory to article title (slug) when possible.
+    # Prefer .content.json title (DOM), fallback to snapshot heuristic.
     new_name=$(python3 - "$tmp_dir" <<'PY'
 import os,re,sys,json
 base = sys.argv[1]
+
+# Load meta for author (to avoid picking author as title)
 meta_p=os.path.join(base,'.meta.json')
 author=''
 if os.path.exists(meta_p):
@@ -182,11 +201,23 @@ if os.path.exists(meta_p):
   except Exception:
     author=''
 
+# Prefer DOM title
+dom_title=''
+cp=os.path.join(base,'.content.json')
+if os.path.exists(cp):
+  try:
+    v=json.load(open(cp,'r',encoding='utf-8'))
+    if isinstance(v,str):
+      v=json.loads(v)
+    dom_title=(v.get('title') or '').strip()
+  except Exception:
+    dom_title=''
+
 snap=os.path.join(base,'.snapshot.txt')
-if not os.path.exists(snap):
-  print('')
-  raise SystemExit
-lines=open(snap,'r',encoding='utf-8',errors='replace').read().splitlines()
+lines=[]
+if os.path.exists(snap):
+  lines=open(snap,'r',encoding='utf-8',errors='replace').read().splitlines()
+
 boiler=set([
   "Don’t miss what’s happening People on X are the first to know.",
   "Don't miss what's happening People on X are the first to know.",
@@ -198,6 +229,10 @@ def slugify(s):
   s=re.sub(r"[^A-Za-z0-9\u4e00-\u9fff\-]+","",s)
   s=re.sub(r"-+","-",s).strip('-')
   return s[:80]
+
+if dom_title and dom_title not in boiler and dom_title != author:
+  print(slugify(dom_title))
+  raise SystemExit
 
 title=''
 for ln in lines:
