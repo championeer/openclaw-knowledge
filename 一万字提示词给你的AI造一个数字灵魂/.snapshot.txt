@@ -1,0 +1,391 @@
+- document:
+  - text: Don’t miss what’s happening People on X are the first to know.
+  - link "Log in" [ref=e1]:
+    - /url: /login
+  - link "Sign up" [ref=e2]:
+    - /url: /i/flow/signup
+  - button "Skip to home timeline" [ref=e3]
+  - button "Skip to trending" [ref=e4]
+  - banner:
+    - heading "X" [ref=e5] [level=1]:
+      - link "X" [ref=e6]:
+        - /url: /
+    - navigation "Primary" [ref=e7]
+  - main:
+    - button "Back" [ref=e8]
+    - heading "Article" [ref=e9] [level=2]
+    - link "Focus mode" [ref=e10]:
+      - /url: /vista8/article/2021240338908876854
+    - status
+    - region "Conversation" [ref=e11]:
+      - heading "Conversation" [ref=e12] [level=1]
+      - article "向阳乔木 Verified account @vista8 16 replies, 164 reposts, 683 likes, 1458 bookmarks, 108284 views" [ref=e13]:
+        - link "向阳乔木 Verified account" [ref=e14]:
+          - /url: /vista8
+          - text: 向阳乔木
+          - img "Verified account"
+        - link "@vista8" [ref=e15]:
+          - /url: /vista8
+        - button "More" [ref=e16]
+        - link "Image" [ref=e17]:
+          - /url: /vista8/article/2021240338908876854/media/2021240217999671296
+          - img "Image"
+        - text: 一万字提示词+10个文件，给你的AI造一个“数字灵魂”
+        - group "16 replies, 164 reposts, 683 likes, 1458 bookmarks, 108284 views":
+          - button "16 Replies. Reply" [ref=e18]: "16"
+          - button "164 reposts. Repost" [ref=e19]: "164"
+          - button "683 Likes. Like" [ref=e20]: "683"
+          - link "108284 views. View post analytics" [ref=e21]:
+            - /url: /vista8/status/2021240338908876854/analytics
+            - text: 108K
+          - button "Bookmark" [ref=e22]
+          - button "Share post" [ref=e23]
+        - text: 上上周参加朋友组织的闭门会。 会上一朋友分享了自己基于Claude Code + Obsidian的个人助理探索。 效果很惊艳，同样用Claude Code，她的工具好像活了一样。 完全理解她当下的重点，后续要做什么，并主动给出建议。 这让我想起前段时间听的一个播客，受访嘉宾写了一万字的Claude.md提示词。 搭建了一个叫TELOS的个人系统，里面记录了他的职业、喜好，人生原则和目标等各种信息。 回家后，结合朋友的分享和TELOS搭建了一套自己的系统。 现在的Claude Code对我已经很了解，比如：
+        - link "Image" [ref=e24] [nth=1]:
+          - /url: /vista8/article/2021240338908876854/media/2021239129930072068
+          - img "Image"
+        - text: 直到昨天，收到另一个好友的建议和分享。 我才发现，TELOS系统作者把自己的整套方法论开源了。
+        - link "https://github.com/danielmiessler/Personal_AI_Infrastructure" [ref=e25]:
+          - /url: https://github.com/danielmiessler/Personal_AI_Infrastructure
+        - link "Image" [ref=e26] [nth=2]:
+          - /url: /vista8/article/2021240338908876854/media/2021239166097555458
+          - img "Image"
+        - text: "有点激动的我，忍不住翻译一篇文章，一起学习这套方法轮。 用到的工具就两个： 一个Claude Code（国内AI配置的也行） + Obsidian（免费笔记软件）。 下面是这套系统的介绍。 每次打开 AI，我们好像都在和一个\"陌生人\"对话。 它不记得你昨天说过什么，不知道你正在做的项目，更不了解你的思维方式和工作习惯。 （一些AI已经有记忆系统，但太弱了！） 每一次对话都是从零开始，像是在酒吧里偶遇的陌生人：聊得再投机，转身就忘。 这很荒谬，不是吗? 我们花了几十年时间让电脑\"记住\"我们的偏好设置、浏览历史、工作文档，却让最智能的 AI 助手变成了一个\"失忆症患者\"。 直到我看到 Personal AI Infrastructure 这个项目。 我才意识到: 问题不在于 AI 的记忆力，而在于我们一直把 AI 当成了\"工具\"，而不是\"基础设施\"。"
+        - heading "从工具到基础设施：一次思维范式的转变" [ref=e27] [level=2]
+        - link "Image" [ref=e28] [nth=3]:
+          - /url: /vista8/article/2021240338908876854/media/2021239204748066819
+          - img "Image"
+        - text: "从自动售货机到操作系统的跃迁 让我们先理解一个概念：什么是基础设施? 你的电脑操作系统是基础设施： 它持续运行，记住你的设置，管理你的文件。 你的云存储是基础设施： 它永远在那里，随时可以访问你的数据。 你的个人笔记系统(无论是 Notion 还是 Obsidian)也是基础设施： 它积累你的知识，随着时间成长。 但现在的 AI 工具呢? 它们更像是\"自动售货机\"。 你提出问题，它吐出答案，随着上下文变长，它会忘记这次交互。 Personal AI Infrastructure (PAI) 要做的，是把 AI 从\"自动售货机\"升级成\"操作系统\"。 当我们开始把 AI 当作基础设施来设计时。 整个产品的架构就完全不同了:"
+        - list:
+          - listitem: 持久性 vs 无状态：你的 AI 应该像你的电脑一样，记住所有交互历史
+          - listitem: 个性化 vs 通用：它应该了解你的独特背景、价值观和工作方式
+          - listitem: 可编程 vs 黑盒：你应该能够自定义它的行为,就像配置你的开发环境
+          - listitem: 版本控制 vs 随机：它的行为应该是确定的、可追溯的、可回滚的
+        - text: 看到区别了吗？ 这就像从"租用计算能力"到"拥有个人电脑"的飞跃。
+        - heading "TELOS：你的数字身份档案" [ref=e29] [level=2]
+        - link "Image" [ref=e30] [nth=4]:
+          - /url: /vista8/article/2021240338908876854/media/2021239243432132609
+          - img "Image"
+        - text: "十个维度构建你的数字自我 PAI 的核心创新之一是 TELOS 系统。 这个名字来源于希腊语，意为\"目的\"或\"终极目标\"。 设想下，如果 AI 真的要成为你的长期助手，它需要了解什么? 传统的 AI 聊天机器人只知道你刚刚告诉它的内容。 但 TELOS 系统用 10 个精心设计的文件 来捕捉\"你是谁\":"
+        - list:
+          - listitem:
+            - text: 核心身份 (
+            - link "00-core-identity.md" [ref=e31]:
+              - /url: //00-core-identity.md
+            - text: )：你的基本信息、背景、角色
+          - listitem:
+            - text: 价值观 (
+            - link "01-values.md" [ref=e32]:
+              - /url: //01-values.md
+            - text: )：什么对你来说最重要
+          - listitem:
+            - text: 背景 (
+            - link "02-background.md" [ref=e33]:
+              - /url: //02-background.md
+            - text: )：你的经历塑造了怎样的你
+          - listitem:
+            - text: 技能 (
+            - link "03-skills.md" [ref=e34]:
+              - /url: //03-skills.md
+            - text: )：你擅长什么,你在学什么
+          - listitem:
+            - text: 沟通风格 (
+            - link "04-communication-style.md" [ref=e35]:
+              - /url: //04-communication-style.md
+            - text: )：你喜欢怎样的对话方式
+          - listitem:
+            - text: 目标 (
+            - link "05-goals.md" [ref=e36]:
+              - /url: //05-goals.md
+            - text: )：短期和长期,你想实现什么
+          - listitem:
+            - text: 知识领域 (
+            - link "06-knowledge-domains.md" [ref=e37]:
+              - /url: //06-knowledge-domains.md
+            - text: )：你的专业领域和兴趣范围
+          - listitem:
+            - text: 工作方式 (
+            - link "07-work-approach.md" [ref=e38]:
+              - /url: //07-work-approach.md
+            - text: )：你的工作流程和偏好
+          - listitem:
+            - text: 关系与背景 (
+            - link "08-relationships-context.md" [ref=e39]:
+              - /url: //08-relationships-context.md
+            - text: )：你的社交和职业网络
+          - listitem:
+            - text: 兴趣 (
+            - link "09-interests.md" [ref=e40]:
+              - /url: //09-interests.md
+            - text: )：让你感到兴奋的事物
+        - text: "这不是简单的\"用户画像\"，这是你的数字自我。 更重要的是，这些文件不是一次性填写的问卷，而是 持续进化的档案。 每次对话、每个项目、每次反思，都在丰富这个档案。 你的 AI 基础设施真正地\"认识\"你，并随着你的成长而成长。 有个细节特别打动我:TELOS 文件使用 Markdown 格式，存储在本地。 这意味着:"
+        - list:
+          - listitem: 数据主权：你的个人信息完全在你的控制之下
+          - listitem: 可读性：你随时可以打开查看、编辑
+          - listitem: 可版本控制：可以用 Git 追踪你的自我认知如何演变
+          - listitem: 可迁移：不锁定在某个平台，随时可以迁移
+        - text: 这是真正的"个人"AI 基础设施。
+        - heading "记忆系统：AI 的\" [ref=e41]第二大脑\"" [level=2]
+        - link "Image" [ref=e42] [nth=5]:
+          - /url: /vista8/article/2021240338908876854/media/2021239281336057860
+          - img "Image"
+        - text: 三层记忆架构：从涟漪到结晶
+        - link "Image" [ref=e43] [nth=6]:
+          - /url: /vista8/article/2021240338908876854/media/2021239573670719488
+          - img "Image"
+        - text: "如果 TELOS 定义了\"你是谁\"，那么记忆系统就记录了\"你做过什么\"。 PAI 实现了三层记忆架构，就像人类的记忆系统: 1. 短期记忆 (Working Memory) 当前对话的上下文，就像你在和朋友聊天时记住的前几句话。 这是实时的、动态的。 2. 情景记忆 (Episodic Memory) 具体的对话记录和项目历史。 \"上周我们讨论过那个 API 设计问题，你当时建议...\" AI 可以准确回忆。 3. 语义记忆 (Semantic Memory) 从经验中提炼的知识和模式。 不是逐字记录,而是理解和概括。 \"你通常喜欢用函数式编程风格\"，\"你对性能优化特别关注\"。 这种分层设计很聪明，因为它模仿了人类大脑的工作方式。 我们不会记住每个细节，但会记住重要的事件，并从经验中形成概念和直觉。 更关键的是检索机制。 PAI 使用向量数据库和相似度搜索，让 AI 能够："
+        - list:
+          - listitem: 根据当前问题找到相关的历史对话
+          - listitem: 识别模式和重复出现的主题
+          - listitem: 在需要时调取相关背景
+        - text: 这不是简单的"翻聊天记录"，而是真正的联想记忆。 就像你听到一个词，自然联想到相关的经历。
+        - heading "Hooks：让 AI 主动感知你的世界" [ref=e44] [level=2]
+        - text: "给 AI 装上感知世界的触角 这是我最喜欢的功能之一：Hooks 系统。 你知道 Git hooks 吗? 在特定事件发生时(比如 commit、push)自动触发脚本。 PAI 把这个概念应用到 AI 交互上。 想象几个场景: 场景 1:工作流集成"
+        - blockquote: "user-prompt-submit-hook: - git status - jq -r '.current_task' ~/work/status.json"
+        - text: 每次你向 AI 提问前，自动运行这些命令，让 AI 知道你当前的 Git 状态和工作任务。 场景 2:自动日志
+        - blockquote: "assistant-response-hook: - echo \"AI 交互: $(date)\" >> ~/logs/ai-activity.log"
+        - text: 每次 AI 回复后，自动记录时间戳，方便追踪你的工作节奏。 场景 3:上下文同步
+        - blockquote: "tool-call-hook: - sync-workspace-state"
+        - text: 当 AI 要调用工具时，先同步工作区状态，确保信息最新。 Hooks 的本质是：让 AI 主动感知你的工作环境，而不是被动等待你的输入。 这就像给 AI 安装了"传感器"。 它不再是一个隔离的对话框，而是真正嵌入到你的工作流程中。
+        - heading "Skills：可组合的 AI 能力" [ref=e45] [level=2]
+        - link "Image" [ref=e46] [nth=7]:
+          - /url: /vista8/article/2021240338908876854/media/2021239610043686912
+          - img "Image"
+        - text: "像搭积木一样扩展 AI 能力 如果说 Hooks 让 AI 感知环境，那 Skills 就是让 AI 学会新能力。 Skills 系统的设计哲学很清晰：AI 应该像程序一样可以扩展功能。 每个 Skill 本质上是一个精心设计的提示词模板，但它是:"
+        - list:
+          - listitem: 命名的:通过 /skill-name 调用，就像 CLI 命令
+          - listitem: 参数化的：可以接受输入，执行特定任务
+          - listitem: 可组合的：Skills 可以相互调用，构建复杂工作流
+        - text: "举几个例子:"
+        - blockquote:
+          - text: "/review-pr 123 # 审查 GitHub PR #123 /commit # 智能生成 Git commit message /analyze-logs error # 分析日志文件中的错误 /explain-code"
+          - link "main.py" [ref=e47]:
+            - /url: //main.py
+          - text: "# 详细解释代码文件"
+        - text: "这些不是预设在 AI 模型里的能力，而是你可以自己定义和安装的\"插件\"。 更重要的是社区效应。 就像 VS Code 的扩展市场、npm 包生态一样，PAI 的 Skills 可以分享和复用。 你可以:"
+        - list:
+          - listitem: 安装别人创建的优秀 Skills
+          - listitem: 根据自己的工作流定制 Skills
+          - listitem: 将你的最佳实践封装成 Skills 分享给团队
+        - text: 这是真正的"可编程 AI"，不是调 API 参数，而是用自然语言"编程"AI 的行为。
+        - heading "工程原则:确定性、模块化、可追溯" [ref=e48] [level=2]
+        - link "Image" [ref=e49] [nth=8]:
+          - /url: /vista8/article/2021240338908876854/media/2021239644772524032
+          - img "Image"
+        - text: "软件工程的三根支柱 如果你是开发者，你会爱上 PAI 的设计哲学。 它把软件工程的最佳实践应用到 AI 系统上: 1. 确定性 传统 AI 聊天的问题：同样的问题，每次得到不同的答案，像个\"黑盒\"。 PAI 的解决方案:"
+        - list:
+          - listitem: 所有配置文件化 (YAML/Markdown)
+          - listitem: 所有交互可记录、可回放
+          - listitem: 版本控制所有变更
+        - text: "你可以准确地知道：\"为什么 AI 会这样回答?\" 2. 模块化 PAI 的架构是高度模块化的:"
+        - list:
+          - listitem: TELOS 文件：身份模块
+          - listitem: Memory 系统：记忆模块
+          - listitem: Hooks：事件模块
+          - listitem: Skills：能力模块
+          - listitem: Tools：工具模块
+        - text: "每个模块独立、可替换、可组合。 你可以只用其中一部分，也可以全部使用。 3. 可追溯性 所有关键数据用纯文本格式:"
+        - list:
+          - listitem: TELOS 用 Markdown
+          - listitem: 配置用 YAML
+          - listitem: 对话用 JSON
+        - text: "这意味着:"
+        - list:
+          - listitem: 可以用 git diff 看变化
+          - listitem: 可以用 grep 搜索历史
+          - listitem: 可以用任何文本工具处理数据
+        - text: 这不是在用 AI，这是在构建系统。
+        - heading "实际应用:AI 如何改变你的日常工作流" [ref=e50] [level=2]
+        - link "Image" [ref=e51] [nth=9]:
+          - /url: /vista8/article/2021240338908876854/media/2021239680105316357
+          - img "Image"
+        - text: "从临时顾问到常驻伙伴 理论说够了，让我们看看实际应用场景。 场景 1:长期项目管理 你在做一个持续几个月的项目。 传统 AI：每次对话都要重新解释项目背景。 用 PAI:"
+        - list:
+          - listitem:
+            - text: TELOS 的
+            - link "05-goals.md" [ref=e52] [nth=1]:
+              - /url: //05-goals.md
+            - text: 记录了项目目标
+          - listitem: Memory 系统记住了所有设计决策
+          - listitem: /project-status Skill 可以快速生成进度报告
+          - listitem: Hooks 自动同步 Git 状态和 TODO 列表
+        - text: "AI 真正成为了项目成员，而不是临时咨询顾问。 场景 2:知识积累 你在学习新技术栈，不断记笔记、写代码、问问题。 用 PAI:"
+        - list:
+          - listitem: 每次学习对话都被记录在 Episodic Memory
+          - listitem: 重要概念自动提炼到 Semantic Memory
+          - listitem:
+            - link "06-knowledge-domains.md" [ref=e53] [nth=1]:
+              - /url: //06-knowledge-domains.md
+            - text: 随着学习更新
+          - listitem: /review-learning Skill 帮你定期复习
+        - text: "AI 从\"答题机器\"变成了\"学习伙伴\"。 场景 3:团队协作 你的团队成员也在用 PAI，你们的 AI 需要相互理解。 用 PAI:"
+        - list:
+          - listitem: 可以导出/导入 TELOS 配置(脱敏版本)
+          - listitem: Skills 可以在团队间共享
+          - listitem: Memory 系统可以记录团队共识
+        - text: "AI 不再是个人工具,而是团队基础设施。 场景 4:创意工作 你是作家/设计师/创业者，需要 AI 理解你的风格和愿景。 用 PAI:"
+        - list:
+          - listitem:
+            - link "04-communication-style.md" [ref=e54] [nth=1]:
+              - /url: //04-communication-style.md
+            - text: 定义你的语言风格
+          - listitem:
+            - link "01-values.md" [ref=e55] [nth=1]:
+              - /url: //01-values.md
+            - text: 确保 AI 建议符合你的价值观
+          - listitem: Memory 系统记住你的创意演化过程
+          - listitem: /brainstorm Skill 基于你的历史产生新想法
+        - text: AI 真正理解你的创意意图，而不是生成通用内容。
+        - heading "民主化企业级 AI：一个更大的愿景" [ref=e56] [level=2]
+        - link "Image" [ref=e57] [nth=10]:
+          - /url: /vista8/article/2021240338908876854/media/2021239713999523840
+          - img "Image"
+        - text: "让每个人都拥有企业级的力量 PAI 的使命陈述特别打动我:"
+        - blockquote: "\"我们的使命是民主化企业级 AI 基础设施的访问，让每个人都能利用 AI 的力量来激活他们的创造潜力，而不必被复杂的技术细节所累。\""
+        - text: "这段话包含两层含义: 1. 民主化企业级能力 大公司可以投入几百万美元构建定制 AI 系统：个性化、持久化、集成到工作流。 但个人开发者、小团队、创业者呢? PAI 要改变这个不平衡。 它提供了一个开源框架，让任何人都能构建\"企业级\"的个人 AI 基础设施。 2. 激活创造潜力 更深层的目标不是\"让 AI 更强大\"，而是\"让人更有创造力\"。 当 AI 真正理解你、记住你、适应你，它就不再是\"替代你思考\"的工具，而是\"增强你思考\"的伙伴。 设想一下:"
+        - list:
+          - listitem: 作家可以和 AI 讨论角色发展，AI 记住所有设定细节
+          - listitem: 研究者可以让 AI 追踪文献、连接想法、指出矛盾
+          - listitem: 创业者可以和 AI 探索商业模式，AI 记住每次迭代的理由
+        - text: 这才是真正的增强。
+        - heading "技术实现：给开发者的细节" [ref=e58] [level=2]
+        - text: "如果你想深入了解技术实现，这里有些关键点: 架构选择"
+        - list:
+          - listitem: CLI 优先：基于命令行，可脚本化，便于集成
+          - listitem: 本地存储：数据存在用户设备,隐私和控制权
+          - listitem: 模型无关：支持 OpenAI、Anthropic、本地模型
+          - listitem: 插件化：核心轻量，功能通过 Skills/Hooks 扩展
+        - text: 数据流
+        - blockquote: 用户输入 → Hooks 预处理 → TELOS 加载 → Memory 检索相关上下文 → 构建完整 Prompt → 调用 LLM → Skills 执行 → Memory 存储新交互 → Hooks 后处理 → 返回响应
+        - text: 每一步都是明确的、可配置的、可观察的。 存储方案
+        - list:
+          - listitem: "TELOS: Markdown 文件"
+          - listitem: "对话历史: JSON Lines 格式"
+          - listitem: "向量数据库: SQLite + 向量扩展 或 专用向量库"
+          - listitem: "配置: YAML 文件"
+        - text: "全部是开放格式,可以用任何工具处理。 扩展点 PAI 设计了清晰的扩展接口:"
+        - list:
+          - listitem: 自定义 Skills：Markdown 文件定义
+          - listitem: 自定义 Hooks：Shell 脚本或可执行文件
+          - listitem: 自定义 Tools：遵循统一接口的插件
+          - listitem: 自定义 Memory 后端：实现 Memory API
+        - text: 这是一个真正为开发者设计的系统。
+        - heading "挑战与未来:这不是完美的解决方案" [ref=e59] [level=2]
+        - link "Image" [ref=e60] [nth=11]:
+          - /url: /vista8/article/2021240338908876854/media/2021239748531290112
+          - img "Image"
+        - text: "前路有挑战，但方向已清晰 PAI 代表了一个激动人心的方向，但我们也要看到挑战: 1. 冷启动问题 要让系统真正有用，你需要:"
+        - list:
+          - listitem: 填写 10 个 TELOS 文件(需要深度自我反思)
+          - listitem: 积累足够的交互历史(时间投入)
+          - listitem: 配置 Hooks 和 Skills(技术门槛)
+        - text: "初期投入不小。 这就像搭建个人知识管理系统：前期痛苦，长期回报。 2. 数据隐私与同步 本地存储保证了隐私，但也带来问题:"
+        - list:
+          - listitem: 如何在多设备间同步?
+          - listitem: 如何备份和恢复?
+          - listitem: 如何在保护隐私的前提下分享部分信息?
+        - text: 这些问题都可以解决(Git、加密、选择性导出)，但需要用户有一定技术能力。 3. 成本与性能 持久化记忆意味着更长的上下文、更多的 API 调用。
+        - list:
+          - listitem: 每次对话都检索历史记忆 → 更慢
+          - listitem: 更长的 Prompt → 更贵
+          - listitem: 向量搜索 → 需要本地计算资源
+        - text: "需要在\"完整上下文\"和\"效率\"之间平衡。 4. 记忆管理 记忆会不断增长，如何:"
+        - list:
+          - listitem: 决定什么该记住、什么该忘记?
+          - listitem: 更新过时的信息?(你的目标变了、技能提升了)
+          - listitem: 避免记忆混乱和矛盾?
+        - text: 这需要智能的记忆管理策略，目前还在探索中。
+        - heading "更大的图景:AI 的个人化时代" [ref=e61] [level=2]
+        - link "Image" [ref=e62] [nth=12]:
+          - /url: /vista8/article/2021240338908876854/media/2021239783687917568
+          - img "Image"
+        - text: "从标准化到个性化的三个时代 把 PAI 放在更大的背景下看: 从通用到个性 AI 的发展经历了几个阶段:"
+        - list:
+          - listitem: 任务专用 AI(2010s)：只做一件事，如图像识别
+          - listitem: 通用对话 AI(2020s)：ChatGPT，什么都能聊
+          - listitem: 个性化 AI 基础设施(现在)：适应每个人的独特需求
+        - text: "PAI 是第三阶段的代表。 从工具到伙伴 我们和 AI 的关系正在改变:"
+        - list:
+          - listitem: 工具时代：我用 AI 完成任务
+          - listitem: 助手时代：AI 帮我做事
+          - listitem: 伙伴时代：AI 理解我、适应我、和我一起成长
+        - text: PAI 在推动这个转变。
+        - heading "你可以做什么?" [ref=e63] [level=2]
+        - link "Image" [ref=e64] [nth=13]:
+          - /url: /vista8/article/2021240338908876854/media/2021239822372007936
+          - img "Image"
+        - text: "从一颗种子开始 如果 PAI 的理念打动了你，这里有几个行动步骤: 1. 尝试构建你的 Personal AI 你不一定要用 PAI 项目本身，但可以借鉴它的思路:"
+        - list:
+          - listitem: 开始记录你和 AI 的对话
+          - listitem: 创建一个"关于我"的文档，每次对话前提供给 AI
+          - listitem: 尝试用脚本自动化你的 AI 工作流
+        - text: "从小步骤开始，感受\"持久化 AI\"的价值。 2. 反思你的数字自我 填写 TELOS 文件本身就是有价值的练习:"
+        - list:
+          - listitem: 你的核心价值观是什么?
+          - listitem: 你的长期目标是什么?
+          - listitem: 你的知识领域和技能树是怎样的?
+        - text: "这不只是为了 AI，也是为了更好地认识自己。 3. 参与开源社区 如果你是开发者:"
+        - list:
+          - listitem: 贡献 Skills 和 Hooks
+          - listitem: 改进 Memory 系统
+          - listitem: 分享你的使用案例和最佳实践
+        - text: "这个领域还很新，每个人都可以贡献。 4. 传播理念 更重要的是推广\"AI 基础设施\"的思维方式:"
+        - list:
+          - listitem: 和团队讨论如何持久化 AI 知识
+          - listitem: 在项目中实验个性化 AI 工作流
+          - listitem: 要求 AI 产品提供更好的记忆和定制能力
+        - text: 用户需求会驱动产品进化。
+        - heading "结语：AI 应该是你的延伸,而不是工具" [ref=e65] [level=2]
+        - text: "回到开头的问题: 为什么我们要让最智能的 AI 助手成为\"失忆症患者\"? 答案很简单：因为我们一直把 AI 当工具，而不是基础设施。 工具是用完就放下的：锤子、计算器、搜索引擎。 基础设施是持续运行的：操作系统、云存储、知识库。 当我们开始把 AI 当作基础设施来设计，一切都不同了。 PAI 迈出了第一步。 它不是完美的产品，但它提出了正确的问题，指明了一个方向。 在 AI 的下一个十年，我们每个人都应该拥有自己的 AI 基础设施。 就像我们每个人都有自己的电脑、自己的云存储、自己的知识管理系统一样，我们也应该有自己的 AI——真正理解我们、记住我们、适应我们的 AI。 你的 AI 不该是个健忘的陌生人，而应该是了解你、陪伴你成长的伙伴。 现在，这个未来正在被构建。 你准备好加入了吗?"
+        - status:
+          - text: Want to publish your own Article?
+          - link "Upgrade to Premium" [ref=e66]:
+            - /url: /i/premium_sign_up
+        - link "11:10 PM · Feb 10, 2026" [ref=e67]:
+          - /url: /vista8/status/2021240338908876854
+          - time: 11:10 PM · Feb 10, 2026
+        - link "108.2K Views" [ref=e68]:
+          - /url: /vista8/status/2021240338908876854/analytics
+        - group "16 replies, 164 reposts, 683 likes, 1458 bookmarks, 108284 views":
+          - button "16 Replies. Reply" [ref=e69] [nth=1]: "16"
+          - button "164 reposts. Repost" [ref=e70] [nth=1]: "164"
+          - button "683 Likes. Like" [ref=e71] [nth=1]: "683"
+          - button "1458 Bookmarks. Bookmark" [ref=e72]: 1.4K
+          - button "Share post" [ref=e73] [nth=1]
+        - button "Read 16 replies" [ref=e74]
+    - region "Sign up" [ref=e75]:
+      - heading "New to X?" [ref=e76] [level=2]
+      - text: Sign up now to get your own personalized timeline!
+      - iframe
+      - button "Sign up with Apple" [ref=e77]
+      - link "Create account" [ref=e78]:
+        - /url: /i/flow/signup
+      - text: By signing up, you agree to the
+      - link "Terms of Service" [ref=e79]:
+        - /url: https://x.com/tos
+      - text: and
+      - link "Privacy Policy" [ref=e80]:
+        - /url: https://x.com/privacy
+      - text: ", including"
+      - link "Cookie Use." [ref=e81]:
+        - /url: https://help.x.com/rules-and-policies/twitter-cookies
+    - text: Something went wrong. Try reloading.
+    - button "Retry" [ref=e82]
+    - navigation "Footer" [ref=e83]:
+      - link "Terms of Service" [ref=e84] [nth=1]:
+        - /url: https://x.com/tos
+      - text: "|"
+      - link "Privacy Policy" [ref=e85] [nth=1]:
+        - /url: https://x.com/privacy
+      - text: "|"
+      - link "Cookie Policy" [ref=e86]:
+        - /url: https://support.x.com/articles/20170514
+      - text: "|"
+      - link "Accessibility" [ref=e87]:
+        - /url: https://help.x.com/resources/accessibility
+      - text: "|"
+      - link "Ads info" [ref=e88]:
+        - /url: https://business.x.com/en/help/troubleshooting/how-twitter-ads-work.html?ref=web-twc-ao-gbl-adsinfo&utm_source=twc&utm_medium=web&utm_campaign=ao&utm_content=adsinfo
+      - text: "|"
+      - button "More" [ref=e89] [nth=1]
+      - text: © 2026 X Corp.
